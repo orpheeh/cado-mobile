@@ -18,7 +18,7 @@ class MyLocation {
 
   
   void startStreamMyLocation(){
-    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+    var locationOptions = LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 10);
 
     myLocationStreamSubscription = geolocator.getPositionStream(locationOptions).listen(
             (Position position) {

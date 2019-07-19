@@ -1,9 +1,11 @@
+import 'dart:convert';
+
+import 'package:cado/services/persistance.dart';
 import 'package:cado/services/project.dart';
 import 'package:cado/services/sign.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import 'home_screen.dart';
 import 'map_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,15 +17,20 @@ class LoginPageState extends State<LoginPage> {
   bool _loginRequestSend;
   Future<Project> _project;
   Login _login;
+  int pid;
+  int mid;
+  String url;
   TextEditingController _codeEditController = TextEditingController();
   TextEditingController _urlEditController = TextEditingController();
 
   _onLoginButtonPressed() {
     setState(() {
+      _project = null;
       _loginRequestSend = true;
-      int pid = int.parse(_codeEditController.text.split('P')[1].split('M')[0]);
-      int mid = int.parse(_codeEditController.text.split('M')[1]);
-      String url = _urlEditController.text;
+      pid = int.parse(_codeEditController.text.split('P')[1].split('M')[0]);
+      mid = int.parse(_codeEditController.text.split('M')[1]);
+      url = _urlEditController.text;
+      debugPrint(url);
       _project = _login.fetchProject(url, pid, mid);
     });
   }
@@ -47,8 +54,7 @@ class LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text('CADO'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: ListView(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(8.0),
@@ -58,12 +64,19 @@ class LoginPageState extends State<LoginPage> {
                     future: _project,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        //Save project zone and markers on local database
                         SchedulerBinding.instance.addPostFrameCallback((_) {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MapPage(project: snapshot.data)));
+                                  builder: (context) => MapPage(
+                                        project: snapshot.data,
+                                        url: url,
+                                        pid: pid,
+                                        mid: mid,
+                                      )));
                         });
+                        Login().saveProject(snapshot.data);
                         return Container();
                       } else if (snapshot.hasError) {
                         return Text(
@@ -72,7 +85,7 @@ class LoginPageState extends State<LoginPage> {
                           style: TextStyle(color: Colors.red),
                         );
                       }
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     },
                   )
                 : Text(''),
@@ -83,7 +96,7 @@ class LoginPageState extends State<LoginPage> {
             child: TextField(
                 controller: _urlEditController,
                 decoration:
-                InputDecoration(hintText: 'Entrez le lien de cado')),
+                    InputDecoration(hintText: 'Entrez le lien de cado')),
           ),
           Container(
             padding: EdgeInsets.all(8.0),

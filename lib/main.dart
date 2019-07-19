@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'CADO Terrain',
+        title: 'CADO',
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
