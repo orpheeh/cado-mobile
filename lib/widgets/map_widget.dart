@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cado/models/my_location.dart';
 import 'package:cado/services/project.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +15,6 @@ class MapWidget extends StatefulWidget {
 }
 
 class MapWidgetState extends State<MapWidget> {
-
   String markerTitle;
   String markerDetails;
   bool showMarkerInformations = false;
@@ -45,15 +42,15 @@ class MapWidgetState extends State<MapWidget> {
           width: 80.0,
           height: 80.0,
           builder: (context) => GestureDetector(
-            onTap: (){
-              //Show mark information
-              setState((){
-                showMarkerInformations = true;
-                markerTitle = geoPos.title;
-                markerDetails = geoPos.details;
-              });
-            },
-                  child: Container(
+              onTap: () {
+                //Show mark information
+                setState(() {
+                  showMarkerInformations = true;
+                  markerTitle = geoPos.title;
+                  markerDetails = geoPos.details;
+                });
+              },
+              child: Container(
                 child: Icon(
                   Icons.location_on,
                   color: Colors.red,
@@ -80,58 +77,52 @@ class MapWidgetState extends State<MapWidget> {
           TileLayerOptions(
               urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
               subdomains: ['a', 'b', 'c']),
-          PolygonLayerOptions(
-            polygons: [
-              Polygon(
-                  points: widget.project.zone,
-                  borderStrokeWidth: 5.0,
-                  color: Colors.transparent,
-                  borderColor: Colors.blue)
-            ],
-          ),
           MarkerLayerOptions(markers: _loadAllMarkers())
         ],
       ),
-      showMarkerInformations ? Container(
-          padding: EdgeInsets.all(16.0),
-          margin: EdgeInsets.all(32.0),
-          decoration: BoxDecoration(color: Colors.white),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  markerTitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                ),
-              ),
-              Container(
-                child: Text(
-                  markerDetails,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(8.0),
-                margin: EdgeInsets.all(4.0),
-                child: FlatButton(
-                  onPressed: () {
-                    setState((){
-                      showMarkerInformations = false;
-                      markerTitle = "";
-                      markerDetails = "";
-                    });
-                  },
-                  child: Text("Fermer"),
-                  textColor: Theme.of(context).primaryColor,
-                ),
-              )
-            ],
-          )) : Container(),
+      showMarkerInformations
+          ? Container(
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(32.0),
+              decoration: BoxDecoration(color: Colors.white),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      markerTitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      markerDetails,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(8.0),
+                    margin: EdgeInsets.all(4.0),
+                    child: FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          showMarkerInformations = false;
+                          markerTitle = "";
+                          markerDetails = "";
+                        });
+                      },
+                      child: Text("Fermer"),
+                      textColor: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],
+              ))
+          : Container(),
     ]);
   }
 }

@@ -30,7 +30,7 @@ class Persistance {
 
   Future<void> insertGoePosition(
       GeographicPosition geographicPosition, Database database) async {
-    final Database db = await database;
+    final Database db = database;
 
     await db.insert(
       'geopos',

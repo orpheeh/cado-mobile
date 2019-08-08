@@ -24,73 +24,37 @@ class RegisterPositionPageState extends State<RegisterPositionPage> {
     return position;
   }
 
-  Future<int> sendGeoPositionToServer() async {
+  /*Future<int> sendGeoPositionToServer() async {
     final persistance = Persistance();
     final database = await persistance.createDb();
-    debugPrint("DELETE");
     persistance.insertGoePosition(GeographicPosition(
       title: titleController.text,
       details: detailsController.text,
       position: LatLng(currentPosition.latitude, currentPosition.longitude)
     ), database);
     return 200;
-  }
+  }*/
 
   _form() {
     return ListView(
       children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(16.0),
-          child: _waitingForServerResponse
-              ? FutureBuilder(
-                  future: requestFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      _waitingForServerResponse = false;
-                      return Text(
-                        'Position Enregistrer avec succès',
-                        style: TextStyle(color: Colors.green), textAlign: TextAlign.center,
-                      );
-                    } else if (snapshot.hasError) {
-                      _waitingForServerResponse = false;
-                      return Text(
-                        snapshot.error.toString(),
-                        style: TextStyle(color: Colors.red),
-                      );
-                    }
-                    return Center(child: CircularProgressIndicator());
-                  },
-                )
-              : Text(''),
+        RaisedButton(
+          onPressed: (){},
+          child: Text("Collecter les déchets"),
+          padding: EdgeInsets.all(16.0),
+          color: Colors.green,
+          textColor: Colors.white,
         ),
-        Container(
-          margin: EdgeInsets.all(16.0),
-          child: TextField(
-            controller: titleController,
-            decoration: InputDecoration(hintText: 'Titre'),
-          ),
+
+        RaisedButton(
+          onPressed: (){},
+          child: Text("Déployer les dispositifs"),
         ),
-        Container(
-          margin: EdgeInsets.all(16.0),
-          child: TextField(
-            controller: detailsController,
-            decoration: InputDecoration(hintText: 'Details'),
-          ),
+
+        RaisedButton(
+          onPressed: (){},
+          child: Text("Point d'accumulation des déchets"),
         ),
-        Container(
-          margin: EdgeInsets.all(16.0),
-          child: RaisedButton(
-            onPressed: () {
-              setState(() {
-                _waitingForServerResponse = true;
-                requestFuture = sendGeoPositionToServer();
-              });
-            },
-            child: Text('Enregistrer'),
-            color: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-          ),
-        )
       ],
     );
   }
@@ -104,7 +68,7 @@ class RegisterPositionPageState extends State<RegisterPositionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Position Géographique'),
+          title: Text('Opérations'),
         ),
         body: FutureBuilder(
             future: positionFuture,

@@ -7,9 +7,4 @@ class Map {
   List<LatLng> zonePoints;
   LatLng center;
   var userLocation;
-
-  Future<LatLng> getCurrentUserLocation(){
-
-  }
-
 }

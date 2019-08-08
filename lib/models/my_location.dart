@@ -1,11 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
 
 import 'dart:async';
 
-import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MyLocation {
